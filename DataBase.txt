@@ -4,3 +4,9 @@ user
 - reg_time DATETIME NOT NULL
 - session_id VARCHAR(255) NOT NULL
 - name VARCHAR(255) NOT NULL
+
+message
+- id INT NOT NULL AUTO_INCREMENT
+- send_time DATETIME NOT NULL
+- user_id INT NOT NULL
+- content VARCHAR(255) NOT NULL
