@@ -25,7 +25,9 @@ GET /api/messages — получение списка сообщений
         {
             "id": 3342,
             "name": "First Second",
+            "time": 12.05.2021
             "message": "some text"
+
         }
 }
 
@@ -41,6 +43,10 @@ POST /api/messages — отправка сообщения
 
 POST /api/users — создание пользователя при логине
 
-Запрос: TODO
+Запрос:
 
-Ответ: TODO
+- name — имя пользователя
+
+Ответ:  {
+    "result": true
+}
