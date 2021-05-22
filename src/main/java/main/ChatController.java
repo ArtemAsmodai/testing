@@ -1,12 +1,5 @@
 package main;
 
-import main.model.Message;
-import main.model.User;
-import main.repos.MessageRepository;
-import main.repos.UserRepository;
-import main.response.AddMessageResponse;
-import main.response.AuthResponse;
-import main.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +7,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
+import main.model.Message;
+import main.model.User;
+import main.repos.MessageRepository;
+import main.repos.UserRepository;
+import main.response.AddMessageResponse;
+import main.response.AuthResponse;
+import main.response.MessageResponse;
+import main.response.UserResponse;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,6 +59,21 @@ public class ChatController {
         return response;
     }
 
+    @GetMapping(path = "/api/users")
+    public HashMap<String, List> getUsers() {
+        Iterable<User> users = userRepository.findAll();
+        ArrayList<UserResponse> userItems = new ArrayList<>();
+        for (User user : users) {
+            UserResponse userResponseItem = new UserResponse();
+            userResponseItem.setName(user.getName());
+            userResponseItem.setId(user.getId());
+            userItems.add(userResponseItem);
+        }
+        HashMap<String, List> result = new HashMap<>();
+        result.put("users", userItems);
+        return result;
+    }
+
     @PostMapping(path = "/api/messages")
     public AddMessageResponse addMessage(HttpServletRequest request) {
         String text = request.getParameter("text");
@@ -67,8 +84,8 @@ public class ChatController {
         Date time = new Date();
         Message message = new Message();
         message.setSendTime(time);
-        message.setUser(user);
-        message.setText(text);
+        message.setUserId(user.getId());
+        message.setContent(text);
         messageRepository.save(message);
 
         AddMessageResponse response = new AddMessageResponse();
@@ -84,11 +101,11 @@ public class ChatController {
         Iterable<Message> messages = messageRepository.findAll();
         for(Message message : messages) {
             MessageResponse messageItem = new MessageResponse();
-            messageItem.setName(message.getUser().getName());
+            messageItem.setName(userRepository.findById(message.getUserId()).get().getName());
             messageItem.setTime(
                     formatter.format(message.getSendTime())
             );
-            messageItem.setText(message.getText());
+            messageItem.setText(message.getContent());
             messagesList.add(messageItem);
         }
         HashMap<String, List> response = new HashMap<>();

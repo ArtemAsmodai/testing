@@ -1,6 +1,14 @@
 package main.model;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import java.util.Date;
 
 @Entity
@@ -9,12 +17,14 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private Date sendTime;
-    @Column(columnDefinition="TEXT")
-    private String text;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
+//
+
+    private int userId;
+    private String content;
 
     public int getId() {
         return id;
@@ -32,19 +42,19 @@ public class Message {
         this.sendTime = sendTime;
     }
 
-    public String getText() {
-        return text;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public User getUser() {
-        return user;
+    public String getContent() {
+        return content;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setContent(String content) {
+        this.content = content;
     }
 }
