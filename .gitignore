@@ -1,2 +1,4 @@
-/.idea/
 /target/
+/.idea/
+.DS_Store
+/application.yml
