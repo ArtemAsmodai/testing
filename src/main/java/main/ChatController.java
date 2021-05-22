@@ -6,6 +6,7 @@ import main.repos.MessageRepository;
 import main.repos.UserRepository;
 import main.response.AddMessageResponse;
 import main.response.AuthResponse;
+import main.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +15,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class ChatController {
@@ -71,6 +74,25 @@ public class ChatController {
         AddMessageResponse response = new AddMessageResponse();
         response.setResult(true);
         response.setTime(formatter.format(time));
+        return response;
+    }
+
+    @GetMapping(path = "/api/messages")
+    public HashMap<String, List> getMessages() {
+        ArrayList<MessageResponse> messagesList =
+                new ArrayList<>();
+        Iterable<Message> messages = messageRepository.findAll();
+        for(Message message : messages) {
+            MessageResponse messageItem = new MessageResponse();
+            messageItem.setName(message.getUser().getName());
+            messageItem.setTime(
+                    formatter.format(message.getSendTime())
+            );
+            messageItem.setText(message.getText());
+            messagesList.add(messageItem);
+        }
+        HashMap<String, List> response = new HashMap<>();
+        response.put("messages", messagesList);
         return response;
     }
 
