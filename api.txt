@@ -24,6 +24,7 @@ GET /api/messages — получение списка сообщений
     "message": [
         {
             "id": 3342,
+            "name": "First Second",
             "message": "some text"
         }
 }
