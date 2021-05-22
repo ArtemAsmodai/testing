@@ -1,4 +1,4 @@
-user
+user — пользователи
 
 - id INT NOT NULL AUTO_INCREMENT
 - reg_time DATETIME NOT NULL
@@ -6,7 +6,8 @@ user
 - name VARCHAR(255) NOT NULL
 
 message
+
 - id INT NOT NULL AUTO_INCREMENT
-- send_time DATETIME NOT NULL
 - user_id INT NOT NULL
-- content VARCHAR(255) NOT NULL
+- time DATETIME NOT NULL
+- message TEXT NOT NULL
